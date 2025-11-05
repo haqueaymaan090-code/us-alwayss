@@ -1,435 +1,350 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Us, Always — Happy Anniversary</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Us, Always 💖</title>
   <style>
-    /* ========== Reset & fonts ========== */
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;600&display=swap');
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
-    body{background:linear-gradient(180deg,#fff6fb 0%, #fff0f8 40%, #f6f0ff 100%);color:#332;overflow-x:hidden}
+    /* 🌸 Basic setup */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #ffe1ec, #fff3f9);
+      overflow-x: hidden;
+      color: #4a004e;
+      text-align: center;
+    }
 
-    /* ========== Stage ========== */
-    .stage{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:48px 20px 120px}
-    header{max-width:900px;width:100%;text-align:center;margin-top:24px}
-    .title{font-family:'Dancing Script',cursive;font-size:48px;margin:0;color:#5b2b4a;letter-spacing:1px}
-    .subtitle{margin-top:8px;color:#7c4a65;font-size:18px}
+    /* 🌈 Password gate overlay */
+    #passwordGate {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at top left, #ffc1dc, #ffe6f2);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+    }
 
-    /* ========== Password gate ========== */
-    .gate{position:fixed;inset:0;background:linear-gradient(180deg, rgba(255,244,249,0.98), rgba(250,240,255,0.98));backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:9999;}
-    .gate .card{width:92%;max-width:420px;background:linear-gradient(180deg,#ffffffee,#fff6f9);padding:28px;border-radius:20px;box-shadow:0 8px 30px rgba(90,40,80,0.12);text-align:center}
-    .gate h2{margin:0;font-family:'Dancing Script',cursive;font-size:30px;color:#6b2f4b}
-    .gate p{color:#6e4b5f;margin:10px 0 18px}
-    .gate input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #ffebf5;background:#fff;outline:none;font-size:16px}
-    .gate button{margin-top:12px;padding:10px 16px;border-radius:12px;border:none;background:linear-gradient(90deg,#ff9ecb,#ffb3e0);color:white;font-weight:600;cursor:pointer}
-    .gate .hint{margin-top:8px;color:#a36b88;font-size:13px}
+    #passwordGate input {
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: 2px solid #ff9acb;
+      text-align: center;
+      font-size: 1.1em;
+      margin-top: 10px;
+    }
 
-    /* ========== Dreamy animated background ========== */
-    .hearts, .petals, .fireflies {position:fixed;inset:0;pointer-events:none;z-index:0}
-    .heart{position:absolute;width:48px;height:48px;opacity:0.85;transform:translate(-50%,-50%)}
-    .heart svg{width:100%;height:100%}
+    #passwordGate button {
+      margin-top: 10px;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 25px;
+      background: #ff9acb;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
 
-    /* create many floating particles via JS */
+    /* 💖 Floating hearts animation */
+    .heart {
+      position: fixed;
+      bottom: -10px;
+      font-size: 20px;
+      color: #ff85a2;
+      animation: floatHearts 10s linear infinite;
+    }
 
-    /* ========== Sparkle cursor ========== */
-    .sparkle{position:fixed;pointer-events:none;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#ffd6ec 0%, rgba(255,200,240,0) 60%);mix-blend-mode:screen;transform:translate(-50%,-50%);z-index:9998}
+    @keyframes floatHearts {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    }
 
-    /* ========== Main sections ========== */
-    main{width:100%;max-width:980px;margin-top:18px;z-index:2}
-    section{background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,250,255,0.6));border-radius:18px;padding:20px;margin:18px 0;box-shadow:0 6px 24px rgba(90,40,80,0.06);opacity:0;transform:translateY(24px);transition:all .8s ease}
-    section.visible{opacity:1;transform:translateY(0)}
+    header {
+      margin-top: 50px;
+    }
 
-    /* ========== Countdown ========== */
-    .countdown{display:flex;gap:12px;justify-content:center;align-items:center;font-weight:600}
-    .countdown .unit{background:linear-gradient(180deg,#fff0f8,#fffbff);padding:12px 14px;border-radius:12px;min-width:80px;text-align:center;box-shadow:inset 0 -6px 18px rgba(200,150,190,0.04)}
-    .countdown .label{display:block;font-size:12px;color:#7c4a65}
-    .celebrate{display:none;text-align:center;padding:14px}
-    .celebrate.show{display:block}
+    h1 {
+      font-family: "Dancing Script", cursive;
+      font-size: 3em;
+      color: #d63384;
+    }
 
-    /* ========== Gallery ========== */
-    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-    .photo{border-radius:12px;padding:8px;background:linear-gradient(180deg,#fff9fb,#fff0f6);box-shadow:0 8px 20px rgba(80,40,80,0.06);position:relative;overflow:hidden}
-    .photo img{display:block;width:100%;height:160px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(80,40,80,0.06)}
-    .photo .caption{font-size:13px;margin-top:8px;color:#6b3b5a}
-    .controls{display:flex;gap:8px;justify-content:center;margin-top:12px}
-    .btn{padding:8px 12px;border-radius:12px;border:none;background:linear-gradient(90deg,#ff9ecb,#ffb3e0);color:white;cursor:pointer}
+    p.tagline {
+      font-style: italic;
+      color: #6a1b9a;
+      font-size: 1.2em;
+    }
 
-    /* ========== Love notes ========== */
-    .notes{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-    .note{width:220px;height:140px;border-radius:14px;background:linear-gradient(180deg,#fff3f9,#fff0fb);box-shadow:0 8px 20px rgba(90,40,80,0.06);padding:12px;cursor:pointer;position:relative}
-    .note .front{font-family:'Dancing Script',cursive;font-size:18px;color:#6b2f4b}
-    .note .back{display:none;position:absolute;inset:0;padding:12px}
-    .note.open .front{display:none}
-    .note.open .back{display:block}
+    /* 🕰 Countdown */
+    #countdown {
+      margin: 40px 0;
+      font-size: 2em;
+      color: #b81f73;
+      text-shadow: 0 0 5px #ffb6c1;
+    }
 
-    /* ========== Floating quotes ========== */
-    .floating-text{position:fixed;bottom:12px;font-family:'Dancing Script',cursive;font-size:18px;pointer-events:none;opacity:0.95}
+    /* 📸 Gallery */
+    #gallerySection {
+      padding: 40px 10px;
+    }
 
-    /* ========== Footer ========== */
-    footer{margin-top:28px;color:#8b597a;text-align:center;font-size:14px}
+    #gallerySection h2 {
+      font-family: "Dancing Script", cursive;
+      font-size: 2.5em;
+      color: #c2185b;
+    }
 
-    /* small screens */
-    @media (max-width:520px){.title{font-size:36px}.note{width:100%}}
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .photo {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .photo:hover {
+      transform: scale(1.03);
+    }
+
+    .photo img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      display: block;
+    }
+
+    .caption {
+      padding: 10px;
+      font-size: 1em;
+      color: #6a1b9a;
+    }
+
+    /* 💬 Love notes */
+    #notes {
+      background: #fff0f8;
+      padding: 40px 10px;
+      border-radius: 30px;
+      margin: 50px auto;
+      max-width: 800px;
+    }
+
+    .love-note {
+      display: inline-block;
+      background: #ffe6f2;
+      border-radius: 20px;
+      padding: 15px 20px;
+      margin: 10px;
+      font-family: "Dancing Script", cursive;
+      font-size: 1.2em;
+      color: #b81f73;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transform: rotate(-1deg);
+    }
+
+    /* ✨ Sparkle cursor */
+    .sparkle {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: radial-gradient(circle, #ffb6c1, transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: fadeSparkle 1s ease-out;
+    }
+
+    @keyframes fadeSparkle {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+
+    /* 💕 Floating quotes */
+    .floating-text {
+      position: fixed;
+      bottom: 0;
+      font-family: "Dancing Script", cursive;
+      font-size: 1.2em;
+      color: #ff99c8;
+      animation: floatUp 6s ease-in forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      to { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    footer {
+      margin: 60px 0 20px;
+      color: #ad1457;
+      font-style: italic;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2em; }
+      #countdown { font-size: 1.5em; }
+    }
   </style>
 </head>
 <body>
-  <!-- Password Gate -->
-  <div class="gate" id="gate">
-    <div class="card">
-      <h2>Welcome, my love 💖</h2>
-      <p>Enter the secret word to open our little corner of the internet.</p>
-      <input id="pw" placeholder="Type the secret word" aria-label="password" />
-      <button id="openBtn">Unlock</button>
-      <div class="hint">(Hint: it’s something bright and warm)</div>
-      <div style="margin-top:8px;color:#b06697;font-size:13px">Secret word is case-insensitive.</div>
+
+  <!-- 🔐 Password Gate -->
+  <div id="passwordGate">
+    <h2>Enter the Secret Word 💞</h2>
+    <input type="password" id="passInput" placeholder="Enter password...">
+    <button onclick="checkPass()">Unlock</button>
+    <p style="margin-top:10px; font-size:0.9em; color:#8a3a64;">Hint: the word that means sunshine ☀️</p>
+  </div>
+
+  <!-- 💖 Main content -->
+  <header>
+    <h1>Us, Always 💖</h1>
+    <p class="tagline">A little corner of the internet just for us ✨</p>
+  </header>
+
+  <!-- Countdown -->
+  <div id="countdown"></div>
+
+  <!-- 📸 Gallery Section -->
+  <section id="gallerySection">
+    <h2>📸 Our Memories</h2>
+    <div class="gallery-grid">
+      <div class="photo">
+        <img src="photo1.jpg" alt="Memory 1">
+        <div class="caption">Our first photo together 💕</div>
+      </div>
+      <div class="photo">
+        <img src="photo2.jpg" alt="Memory 2">
+        <div class="caption">That day we couldn’t stop laughing 😄</div>
+      </div>
+      <div class="photo">
+        <img src="photo3.jpg" alt="Memory 3">
+        <div class="caption">Sunset and smiles 🌅</div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Dreamy animated layers -->
-  <div class="hearts" id="hearts"></div>
-  <div class="petals" id="petals"></div>
-  <div class="fireflies" id="fireflies"></div>
+  <!-- 💌 Love Notes -->
+  <section id="notes">
+    <h2>💌 Love Notes</h2>
+    <div class="love-note">“You make every moment magical 💫”</div>
+    <div class="love-note">“My favorite place will always be next to you 💖”</div>
+    <div class="love-note">“Forever isn’t long enough with you 💞”</div>
+  </section>
 
-  <!-- Sparkle cursor container (dynamic elements will attach) -->
-  <div id="sparkles"></div>
+  <footer>
+    <p>Made with 💘 for you — our story, our forever.</p>
+  </footer>
 
-  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9997;"></canvas>
+  <!-- 🎶 Background Music -->
+  <audio id="bgMusic" src="music.mp3" loop></audio>
+  <button onclick="toggleMusic()" style="position:fixed;bottom:20px;right:20px;padding:10px 15px;border:none;border-radius:20px;background:#ff85a2;color:white;cursor:pointer;">🎧 Play / Pause Music</button>
 
-  <div class="stage" id="stage">
-    <header>
-      <h1 class="title">Us, Always</h1>
-      <div class="subtitle">A little corner of the internet just for us ✨</div>
-    </header>
+  <script>
+    /* 🔐 Password Gate */
+    const SECRET = "sunshine";
+    function checkPass() {
+      const input = document.getElementById("passInput").value.toLowerCase();
+      if (input === SECRET) {
+        document.getElementById("passwordGate").style.display = "none";
+      } else {
+        alert("Oops! Try again 💗");
+      }
+    }
 
-    <main>
-      <section id="countdownSection">
-        <h3 style="text-align:center;color:#7c4a65;margin:6px 0 14px;font-size:22px">Days Until Our Anniversary</h3>
-        <div class="countdown" aria-live="polite">
-          <div class="unit"><div class="num" id="days">00</div><span class="label">Days</span></div>
-          <div class="unit"><div class="num" id="hours">00</div><span class="label">Hours</span></div>
-          <div class="unit"><div class="num" id="minutes">00</div><span class="label">Minutes</span></div>
-          <div class="unit"><div class="num" id="seconds">00</div><span class="label">Seconds</span></div>
-        </div>
-        <div class="celebrate" id="celebrate">
-          <h2 style="font-family:'Dancing Script',cursive">Happy Anniversary 💘</h2>
-          <p>Love you more than words. Click below to read a little love letter.</p>
-          <button class="btn" id="openLetter">Open Letter</button>
-        </div>
-      </section>
+    /* 💖 Floating hearts */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 5 + Math.random() * 5 + "s";
+      heart.innerHTML = "💖";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+    setInterval(createHeart, 800);
 
-      <section id="gallerySection">
-        <h3 style="color:#7c4a65">Our Scrapbook</h3>
-        <div style="text-align:center;color:#a36b88;margin-bottom:12px">Add photos (they stay in your browser) — or drag & drop into the area.</div>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <input type="file" id="fileInput" accept="image/*" multiple />
-          <button class="btn" id="clearGallery">Clear Gallery</button>
-        </div>
-        <div class="gallery-grid" id="gallery"></div>
-        <div style="text-align:center;margin-top:10px;color:#84506e;font-size:13px">Tip: click any photo to add a caption.</div>
-      </section>
-
-      <section id="notesSection">
-        <h3 style="color:#7c4a65">Love Notes & Promises</h3>
-        <div class="notes" id="notes">
-          <div class="note" tabindex="0">
-            <div class="front">You’re my favorite hello.</div>
-            <div class="back">From the first day, you made everything brighter. I promise to always cheer for you.</div>
-          </div>
-          <div class="note" tabindex="0">
-            <div class="front">I love your laugh.</div>
-            <div class="back">That sound is my favorite song. I promise to keep you laughing.</div>
-          </div>
-          <div class="note" tabindex="0">
-            <div class="front">Let’s keep exploring</div>
-            <div class="back">More trips, more coffee, more silly late-night convos. Together.</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="musicSection">
-        <h3 style="color:#7c4a65">Soft Melody</h3>
-        <p style="color:#a36b88">(Add a file named <code>music.mp3</code> to the site folder or upload it to your hosting and set the URL in the code.)</p>
-        <div style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:8px">
-          <button class="btn" id="playMusic">Play Music</button>
-          <button class="btn" id="pauseMusic">Pause</button>
-        </div>
-        <audio id="bgMusic" loop preload="none"></audio>
-      </section>
-
-      <section id="letterSection" style="display:none">
-        <h3 style="color:#7c4a65">A Little Letter</h3>
-        <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff0f8,#fff6fb);box-shadow:0 8px 24px rgba(80,40,80,0.06)">
-          <p style="font-family:'Dancing Script',cursive;font-size:20px;margin:0;color:#5b2b4a">My dearest love —</p>
-          <p style="color:#6b3b5a;line-height:1.5">Every day with you feels like walking through a garden I’ve never known I needed. Thank you for being you, for holding my hand, and for making simple moments feel like home. Happy anniversary. For all our tomorrows — <strong>I choose you.</strong></p>
-          <div style="text-align:right;color:#7c4a65">— Forever & Always</div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer>Made with 💖 — <small style="color:#a36b88">Happy Anniversary — Nov 11, 2025</small></footer>
-  </div>
-
-<script>
-/* =========================
-   Configuration / Constants
-   ========================= */
-const SECRET = 'sunshine'; // secret word (case-insensitive)
-const ANNIV_DATE = new Date('2025-11-11T00:00:00'); // Anniversary date (midnight server time)
-
-/* =========================
-   Password gate behavior
-   ========================= */
-const gate = document.getElementById('gate');
-const pw = document.getElementById('pw');
-const openBtn = document.getElementById('openBtn');
-function tryOpen(){
-  if(pw.value && pw.value.trim().toLowerCase() === SECRET.toLowerCase()){
-    gate.style.display = 'none';
-    startSite();
-  } else {
-    openBtn.textContent = 'Try Again';
-    pw.value = '';
-    pw.placeholder = 'Not quite — try again 💌';
-  }
-}
-openBtn.addEventListener('click', tryOpen);
-pw.addEventListener('keydown', e=>{if(e.key==='Enter') tryOpen();});
-
-/* If you want to bypass during development, uncomment: */
-// gate.style.display='none'; startSite();
-
-/* =========================
-   Initialize site after gate opens
-   ========================= */
-function startSite(){
-  document.querySelectorAll('section').forEach((s,i)=>setTimeout(()=>s.classList.add('visible'), 200+i*120));
-  initBackgroundParticles();
-  initSparkles();
-  initCountdown();
-  initGallery();
-  initNotes();
-  initMusic();
-}
-
-/* =========================
-   Floating hearts / petals / fireflies
-   ========================= */
-function rand(min,max){return Math.random()*(max-min)+min}
-function makeParticle(container,svgHtml,cls){
-  const el = document.createElement('div');
-  el.className = cls || 'heart';
-  el.style.left = rand(2,98)+'%';
-  el.style.top = rand(80,120)+'%';
-  el.style.opacity = rand(0.35,0.95);
-  el.style.transform = `translate(-50%,-50%) scale(${rand(0.6,1.2)}) rotate(${rand(0,360)}deg)`;
-  el.innerHTML = svgHtml;
-  container.appendChild(el);
-  const duration = rand(10,28);
-  el.animate([
-    { transform: el.style.transform, opacity:0 },
-    { transform: `translate(-50%,-150vh) scale(${rand(0.9,1.4)})`, opacity:1 }
-  ],{duration:duration*1000, easing:'linear'});
-  setTimeout(()=>el.remove(),duration*1000+500);
-}
-
-function initBackgroundParticles(){
-  const hearts = document.getElementById('hearts');
-  const petals = document.getElementById('petals');
-  const fireflies = document.getElementById('fireflies');
-  const heartSVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.35-9.5-7.24C-0.5 9.38 4.64 4 8.5 6.6 10.74 7.97 12 13 12 13s1.26-5.03 3.5-6.4C19.36 4 24.5 9.38 21.5 13.76 19.5 16.65 12 21 12 21z" fill="#FF9ECB"/></svg>`;
-  const petalSVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffd6e8" opacity="0.95"/></svg>`;
-  const fireflySVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="#fff7c6" opacity="0.95"/></svg>`;
-  // initial burst
-  for(let i=0;i<14;i++) makeParticle(hearts,heartSVG,'heart');
-  // ongoing spawn
-  setInterval(()=>{ if(Math.random()<0.7) makeParticle(hearts,heartSVG,'heart'); }, 900);
-  setInterval(()=>{ if(Math.random()<0.35) makeParticle(petals,petalSVG,'heart'); }, 1100);
-  setInterval(()=>{ if(Math.random()<0.25) makeParticle(fireflies,fireflySVG,'heart'); }, 1400);
-}
-
-/* =========================
-   Sparkle cursor
-   ========================= */
-function initSparkles(){
-  const container = document.getElementById('sparkles');
-  document.addEventListener('mousemove', (e)=>{
-    const s = document.createElement('div');
-    s.className = 'sparkle';
-    s.style.left = e.clientX + 'px';
-    s.style.top = e.clientY + 'px';
-    s.style.width = (Math.random()*10+6)+'px';
-    s.style.height = s.style.width;
-    s.style.opacity = Math.random()*0.6+0.4;
-    container.appendChild(s);
-    setTimeout(()=>s.remove(),700);
-  });
-}
-
-/* =========================
-   Countdown timer + celebration
-   ========================= */
-const daysEl=document.getElementById('days'), hoursEl=document.getElementById('hours'), minutesEl=document.getElementById('minutes'), secondsEl=document.getElementById('seconds');
-function updateCountdown(){
-  const now=new Date();
-  const diff = ANNIV_DATE - now;
-  if(diff<=0){
-    daysEl.textContent='00'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00';
-    onAnniversary();
-    clearInterval(countdownInterval);
-    return;
-  }
-  const s=Math.floor(diff/1000)%60;
-  const m=Math.floor(diff/1000/60)%60;
-  const h=Math.floor(diff/1000/60/60)%24;
-  const d=Math.floor(diff/1000/60/60/24);
-  daysEl.textContent=String(d).padStart(2,'0'); hoursEl.textContent=String(h).padStart(2,'0'); minutesEl.textContent=String(m).padStart(2,'0'); secondsEl.textContent=String(s).padStart(2,'0');
-}
-let countdownInterval;
-function initCountdown(){ updateCountdown(); countdownInterval=setInterval(updateCountdown,1000); }
-
-/* Celebration visuals */
-const confettiCanvas = document.getElementById('confettiCanvas');
-const confettiCtx = confettiCanvas.getContext('2d');
-function resizeCanvas(){confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight}
-resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-
-let confettiPieces=[];
-function makeConfetti(){
-  const count = 120;
-  for(let i=0;i<count;i++){
-    confettiPieces.push({x:Math.random()*confettiCanvas.width, y:Math.random()*-confettiCanvas.height, vx:rand(-2,2), vy:rand(2,8), r:rand(4,10), color:`hsl(${rand(320,350)},80%,60%)`});
-  }
-}
-function drawConfetti(){
-  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-  confettiPieces.forEach((p,i)=>{
-    confettiCtx.fillStyle=p.color;
-    confettiCtx.fillRect(p.x,p.y,p.r,p.r*0.6);
-    p.x+=p.vx; p.y+=p.vy; p.vy+=0.08;
-    if(p.y>confettiCanvas.height+40) confettiPieces.splice(i,1);
-  });
-  if(confettiPieces.length>0) requestAnimationFrame(drawConfetti);
-}
-
-function fireworks(){
-  // small starburst on screen center
-  const x = confettiCanvas.width/2; const y = confettiCanvas.height/3;
-  for(let i=0;i<40;i++){
-    confettiPieces.push({x,y,vx:rand(-6,6),vy:rand(-8,2),r:rand(3,7),color:`hsl(${rand(320,360)},80%,60%)`});
-  }
-  if(confettiPieces.length>0) drawConfetti();
-}
-
-function onAnniversary(){
-  document.getElementById('celebrate').classList.add('show');
-  makeConfetti(); fireworks();
-  document.querySelectorAll('section').forEach(s=>s.classList.add('visible'));
-  // play a gentle audio bell (if provided)
-  const audio = document.getElementById('bgMusic');
-  try{ audio.play(); }catch(e){}
-}
-
-/* =========================
-   Gallery: local images (stored in localStorage)
-   ========================= */
-const gallery = document.getElementById('gallery');
-const fileInput = document.getElementById('fileInput');
-const clearGalleryBtn = document.getElementById('clearGallery');
-function dataURLtoFile(dataurl, filename){
-  const arr = dataurl.split(','); const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]); let n = bstr.length; const u8arr = new Uint8Array(n);
-  while(n--) u8arr[n]=bstr.charCodeAt(n);
-  return new File([u8arr], filename, {type:mime});
-}
-
-function loadGallery(){
-  const stored = JSON.parse(localStorage.getItem('us_gallery')||'[]');
-  gallery.innerHTML='';
-  stored.forEach((item,idx)=>{
-    const card = document.createElement('div'); card.className='photo';
-    const img = document.createElement('img'); img.src = item.data;
-    img.alt = item.caption||('photo-'+idx);
-    img.addEventListener('click', ()=>{
-      const cap = prompt('Add or edit a caption:', item.caption||'');
-      if(cap!==null){ item.caption = cap; saveGallery(stored); loadGallery(); }
+    /* ✨ Sparkle cursor */
+    document.addEventListener("mousemove", e => {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = e.pageX + "px";
+      sparkle.style.top = e.pageY + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
     });
-    const cap = document.createElement('div'); cap.className='caption'; cap.textContent = item.caption||'';
-    card.appendChild(img); card.appendChild(cap); gallery.appendChild(card);
-  });
-}
-function saveGallery(arr){ localStorage.setItem('us_gallery', JSON.stringify(arr)); }
-fileInput.addEventListener('change', async (e)=>{
-  const files = Array.from(e.target.files);
-  const stored = JSON.parse(localStorage.getItem('us_gallery')||'[]');
-  for(const f of files){
-    const reader = new FileReader();
-    await new Promise(res=>{ reader.onload = ()=>{ stored.push({data:reader.result, caption:''}); res(); }; reader.readAsDataURL(f); });
-  }
-  saveGallery(stored); loadGallery(); fileInput.value='';
-});
-clearGalleryBtn.addEventListener('click', ()=>{ if(confirm('Clear all photos from this browser?')){ localStorage.removeItem('us_gallery'); loadGallery(); }});
 
-function initGallery(){ loadGallery(); }
+    /* 💕 Floating quotes */
+    const messages = [
+      "You’re my favorite hello and hardest goodbye 💕",
+      "Every love story is beautiful, but ours is my favorite 🌸",
+      "You + Me = Always 💫"
+    ];
+    setInterval(() => {
+      const msg = document.createElement("div");
+      msg.className = "floating-text";
+      msg.textContent = messages[Math.floor(Math.random() * messages.length)];
+      msg.style.left = Math.random() * window.innerWidth + "px";
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 6000);
+    }, 5000);
 
-/* =========================
-   Notes interactivity
-   ========================= */
-function initNotes(){
-  document.querySelectorAll('.note').forEach(n=>{
-    n.addEventListener('click', ()=>n.classList.toggle('open'));
-    n.addEventListener('keydown', e=>{ if(e.key==='Enter') n.classList.toggle('open'); });
-  });
-  document.getElementById('openLetter').addEventListener('click', ()=>{
-    document.getElementById('letterSection').style.display='block';
-    document.getElementById('letterSection').classList.add('visible');
-    document.getElementById('letterSection').scrollIntoView({behavior:'smooth'});
-  });
-}
+    /* 🎵 Music toggle */
+    const music = document.getElementById("bgMusic");
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
+    }
 
-/* =========================
-   Music control
-   ========================= */
-function initMusic(){
-  const audio = document.getElementById('bgMusic');
-  // Default: developer should place music.mp3 next to this file, or set URL here.
-  audio.src = 'music.mp3';
-  document.getElementById('playMusic').addEventListener('click', ()=>{audio.play();});
-  document.getElementById('pauseMusic').addEventListener('click', ()=>{audio.pause();});
-}
+    /* ⏳ Countdown */
+    const ANNIV_DATE = new Date("2025-11-11T00:00:00");
+    const countdown = document.getElementById("countdown");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = ANNIV_DATE - now;
+      if (diff <= 0) {
+        countdown.textContent = "💥 Happy Anniversary! 💥";
+        confettiCelebration();
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      countdown.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-/* =========================
-   Floating occasional quotes
-   ========================= */
-const floatMessages = [
-  "You make every moment magical 💕",
-  "My forever favorite person 🌙",
-  "You + Me = Always 💫",
-  "Thank you for choosing me ❤️",
-  "I love you — simple and true." 
-];
-function spawnFloatingText(){
-  const el = document.createElement('div');
-  el.className='floating-text';
-  el.textContent = floatMessages[Math.floor(Math.random()*floatMessages.length)];
-  el.style.left = Math.random()*70 + 10 + '%';
-  document.body.appendChild(el);
-  el.animate([{transform:'translateY(0)', opacity:1},{transform:'translateY(-130vh)', opacity:0}],{duration:6000,easing:'ease-out'});
-  setTimeout(()=>el.remove(),6200);
-}
-setInterval(spawnFloatingText,7000);
-
-/* =========================
-   Helpful tips: keyboard shortcut to reveal gate during demo
-   ========================= */
-window.addEventListener('keydown', e=>{ if(e.key==='g' && e.ctrlKey){ gate.style.display='none'; startSite(); } });
-
-/* =========================
-   Start when gate is removed via code during dev
-   ========================= */
-// end script
-</script>
+    /* 🎉 Confetti on anniversary */
+    function confettiCelebration() {
+      for (let i = 0; i < 150; i++) {
+        const conf = document.createElement("div");
+        conf.textContent = "🎊";
+        conf.style.position = "fixed";
+        conf.style.left = Math.random() * 100 + "vw";
+        conf.style.top = "-20px";
+        conf.style.fontSize = "24px";
+        conf.style.animation = `fall ${3 + Math.random() * 3}s linear`;
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 5000);
+      }
+    }
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes fall {
+        to { transform: translateY(110vh); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
